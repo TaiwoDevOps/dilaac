@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="375" height="258" viewBox="0 0 375 258">
+  <defs>
+    <clipPath id="clip-path">
+      <rect id="Rectangle_48" data-name="Rectangle 48" width="375" height="258" transform="translate(-354.413 -122.5)" fill="#fff" opacity="0.33"/>
+    </clipPath>
+    <linearGradient id="linear-gradient" x1="0.102" y1="0.05" x2="0.721" y2="1.033" gradientUnits="objectBoundingBox">
+      <stop offset="0" stop-color="#fbc000"/>
+      <stop offset="0.365" stop-color="#e19901"/>
+      <stop offset="1" stop-color="#c05810"/>
+    </linearGradient>
+    <linearGradient id="linear-gradient-2" x1="0.099" y1="0" x2="0.838" y2="1.036" xlink:href="#linear-gradient"/>
+    <linearGradient id="linear-gradient-3" x1="0.163" y1="0.038" x2="0.755" y2="1.058" xlink:href="#linear-gradient"/>
+    <filter id="Bg" x="-354.587" y="-589.5" width="910.962" height="857.404" filterUnits="userSpaceOnUse">
+      <feOffset input="SourceAlpha"/>
+      <feGaussianBlur stdDeviation="20" result="blur"/>
+      <feFlood flood-color="#f93"/>
+      <feComposite operator="in" in2="blur"/>
+      <feComposite in="SourceGraphic"/>
+    </filter>
+  </defs>
+  <g id="Bg-2" data-name="Bg" transform="translate(356.413 122.5)">
+    <g id="Group_45" data-name="Group 45" transform="translate(-2)">
+      <g id="Mask_Group_3" data-name="Mask Group 3" clip-path="url(#clip-path)">
+        <ellipse id="Bg-3" data-name="Bg" cx="395.481" cy="368.702" rx="395.481" ry="368.702" transform="translate(-532.789 -604.104)" opacity="0.302" fill="url(#linear-gradient)"/>
+        <ellipse id="Bg-4" data-name="Bg" cx="395.481" cy="368.702" rx="395.481" ry="368.702" transform="translate(-593.014 -633.031)" opacity="0.502" fill="url(#linear-gradient-2)"/>
+        <g transform="matrix(1, 0, 0, 1, -354.41, -122.5)" filter="url(#Bg)">
+          <ellipse id="Bg-5" data-name="Bg" cx="395.481" cy="368.702" rx="395.481" ry="368.702" transform="translate(-294.59 -529.5)" fill="url(#linear-gradient-3)"/>
+        </g>
+      </g>
+    </g>
+  </g>
+</svg>

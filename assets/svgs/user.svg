@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="19.75" height="25" viewBox="0 0 19.75 25">
+  <g id="Icon_User" data-name="Icon/User" transform="translate(0.5 0.5)">
+    <path id="Icon_Color" data-name="Icon Color" d="M18.75,24H0V19.5a8.183,8.183,0,0,1,1.636-4.922,8.321,8.321,0,0,1,4.139-2.953,6.375,6.375,0,1,1,7.2,0,8.321,8.321,0,0,1,4.139,2.953A8.184,8.184,0,0,1,18.75,19.5V24ZM8.25,12.75A6.77,6.77,0,0,0,1.5,19.5v3H17.25v-3a6.77,6.77,0,0,0-6.75-6.75ZM9.375,1.5a4.864,4.864,0,1,0,3.45,1.425A4.846,4.846,0,0,0,9.375,1.5Z" transform="translate(0 0)" fill="#272626" stroke="rgba(0,0,0,0)" stroke-width="1"/>
+  </g>
+</svg>
