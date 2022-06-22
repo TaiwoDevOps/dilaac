@@ -24,6 +24,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:jiffy/jiffy.dart';
 
 import '../transaction_history_screen/trans_widget.dart';
+import '../transaction_history_screen/transaction_list.dart';
 
 class DashBoardScreen extends StatefulHookWidget {
   @override
@@ -73,7 +74,237 @@ class _DashBoardScreenState extends State<DashBoardScreen>
           ),
         ),
         body: profileProvider == null || transProvider == null
-            ? Container()
+            ? Stack(
+                fit: StackFit.expand,
+                children: [
+                  //bottom
+                  FractionallySizedBox(
+                    alignment: Alignment.bottomCenter,
+                    heightFactor: 0.6,
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: Sizes.dimen_16),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          YMargin(Sizes.dimen_40),
+                          InkWell(
+                            onTap: () {
+                              navigator.pushTo(PaymentLinkScreen());
+                            },
+                            splashColor: AppColor.lightOrange.withOpacity(0.2),
+                            focusColor: AppColor.lightOrange.withOpacity(0.2),
+                            child: Container(
+                              padding: const EdgeInsets.symmetric(
+                                  vertical: Sizes.dimen_10),
+                              height: Sizes.dimen_80,
+                              decoration: BoxDecoration(
+                                  border: Border.all(
+                                      color: AppColor.textFormPlaceHolderColor
+                                          .withOpacity(0.4)),
+                                  borderRadius: BorderRadius.all(
+                                      Radius.circular(Sizes.dimen_10))),
+                              child: Row(
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  const XMargin(Sizes.dimen_16),
+                                  SvgAssetConstant.chainSVG,
+                                  const XMargin(Sizes.dimen_24),
+                                  Expanded(
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Text(
+                                          TranslationConstants
+                                              .generatePaymentLink,
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .subtitle1
+                                              ?.copyWith(
+                                                  fontWeight: FontWeight.w700,
+                                                  color: AppColor.black),
+                                        ),
+                                        Text(
+                                          TranslationConstants
+                                              .generatePaymentLinkDesc,
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .subtitle1
+                                              ?.copyWith(
+                                                  fontWeight: FontWeight.w400,
+                                                  color: AppColor.black,
+                                                  letterSpacing: 1.5,
+                                                  fontSize: Sizes.dimen_12),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                          YMargin(Sizes.dimen_32),
+                          Text(
+                            TranslationConstants.transactionHistory,
+                            style: Theme.of(context)
+                                .textTheme
+                                .subtitle1
+                                ?.copyWith(
+                                    fontWeight: FontWeight.w900,
+                                    color: AppColor.black,
+                                    letterSpacing: 1,
+                                    fontSize: Sizes.dimen_14),
+                          ),
+                          YMargin(Sizes.dimen_16),
+                          Container(
+                            height: Sizes.dimen_200,
+                            width: double.infinity,
+                            padding: const EdgeInsets.symmetric(
+                                vertical: Sizes.dimen_10),
+                            decoration: BoxDecoration(
+                                border: Border.all(
+                                    color: AppColor.textFormPlaceHolderColor
+                                        .withOpacity(0.4)),
+                                borderRadius: BorderRadius.all(
+                                    Radius.circular(Sizes.dimen_10))),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Spacer(),
+                                Image.asset(
+                                  ImageConstant.paperPng,
+                                  height: Sizes.dimen_60,
+                                ),
+                                const YMargin(Sizes.dimen_24),
+                                Text(
+                                  TranslationConstants.noInformationAvailable,
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .subtitle1
+                                      ?.copyWith(
+                                          fontWeight: FontWeight.w900,
+                                          fontSize: Sizes.dimen_16,
+                                          color: AppColor.black),
+                                ),
+                                const YMargin(Sizes.dimen_8),
+                                Text(
+                                  TranslationConstants
+                                      .noInformationAvailableDesc,
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .subtitle1
+                                      ?.copyWith(
+                                          fontWeight: FontWeight.w400,
+                                          color: AppColor.black,
+                                          letterSpacing: 1.5,
+                                          fontSize: Sizes.dimen_12),
+                                ),
+                                const YMargin(Sizes.dimen_24),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                  //Header
+                  FractionallySizedBox(
+                      alignment: Alignment.topCenter,
+                      heightFactor: 0.4,
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: Sizes.dimen_16),
+                        decoration: BoxDecoration(
+                          gradient: kHomeLinearGrad,
+                          borderRadius: BorderRadius.only(
+                            bottomLeft: Radius.circular(Sizes.dimen_30),
+                            bottomRight: Radius.circular(Sizes.dimen_30),
+                          ),
+                        ),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            SafeArea(
+                              child: Row(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Builder(
+                                    builder: (context) => IconButton(
+                                        icon: SvgAssetConstant.menuSVG,
+                                        padding: const EdgeInsets.all(0),
+                                        alignment: Alignment.centerLeft,
+                                        onPressed: () {
+                                          Scaffold.of(context).openDrawer();
+                                        }),
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.only(
+                                        top: Sizes.dimen_12),
+                                    child: Container(
+                                      height: Sizes.dimen_40,
+                                      width: Sizes.dimen_40,
+                                      decoration: BoxDecoration(
+                                        color: AppColor.white,
+                                        borderRadius: BorderRadius.circular(
+                                            Sizes.dimen_100),
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            const YMargin(Sizes.dimen_20),
+                            Row(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text(
+                                      TranslationConstants.walletBalance,
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .subtitle1
+                                          ?.copyWith(
+                                              fontWeight: FontWeight.w700,
+                                              color: AppColor.white),
+                                    ),
+                                    Text(
+                                      "N 0.0",
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .subtitle1
+                                          ?.copyWith(
+                                              fontWeight: FontWeight.w900,
+                                              color: AppColor.white,
+                                              letterSpacing: 1.5,
+                                              fontSize: Sizes.dimen_28),
+                                    ),
+                                  ],
+                                ),
+                                SvgAssetConstant.walletSVG
+                              ],
+                            ),
+                            const YMargin(Sizes.dimen_26),
+                            TransactionAndAmountCard("0.0", "0.0"),
+                            Spacer()
+                          ],
+                        ),
+                      )),
+                ],
+              )
             : Stack(
                 fit: StackFit.expand,
                 children: [
@@ -91,7 +322,8 @@ class _DashBoardScreenState extends State<DashBoardScreen>
                                   paymentLinkProvider.data!.url!.isEmpty
                               ? YMargin(Sizes.dimen_40)
                               : SizedBox.shrink(),
-                          paymentLinkProvider!.data!.url!.isEmpty
+                          paymentLinkProvider == null ||
+                                  paymentLinkProvider.data!.url!.isEmpty
                               ? InkWell(
                                   onTap: () {
                                     navigator.pushTo(PaymentLinkScreen());
@@ -219,7 +451,8 @@ class _DashBoardScreenState extends State<DashBoardScreen>
                                     ),
                                   ),
                                 ),
-                          paymentLinkProvider.data!.url!.isEmpty
+                          paymentLinkProvider == null ||
+                                  paymentLinkProvider.data!.url!.isEmpty
                               ? YMargin(Sizes.dimen_32)
                               : SizedBox.shrink(),
                           Text(
@@ -233,7 +466,8 @@ class _DashBoardScreenState extends State<DashBoardScreen>
                                     letterSpacing: 1,
                                     fontSize: Sizes.dimen_14),
                           ),
-                          YMargin(paymentLinkProvider.data!.url!.isEmpty
+                          YMargin(paymentLinkProvider == null ||
+                                  paymentLinkProvider.data!.url!.isEmpty
                               ? Sizes.dimen_16
                               : 0),
                           transProvider.data != null
@@ -323,6 +557,7 @@ class _DashBoardScreenState extends State<DashBoardScreen>
                       ),
                     ),
                   ),
+                  //Header
                   FractionallySizedBox(
                       alignment: Alignment.topCenter,
                       heightFactor: 0.4,
@@ -430,8 +665,8 @@ class _DashBoardScreenState extends State<DashBoardScreen>
                                     horizontal: Sizes.dimen_20),
                                 child: Button2(
                                   text: TranslationConstants.viewMore,
-                                  onPressed: () => navigator
-                                      .pushTo(TransactionHistoryScreen()),
+                                  onPressed: () =>
+                                      navigator.pushTo(TransactionListScreen()),
                                 ),
                               ),
                             ),

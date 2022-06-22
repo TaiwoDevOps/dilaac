@@ -19,6 +19,7 @@ import 'package:dilaac/utils/navigator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 
+import '../transaction_history_screen/transaction_list.dart';
 import 'payout_flow_screens/bank_detail_screen.dart';
 
 class PayoutScreen extends StatefulHookWidget {
@@ -421,8 +422,7 @@ class _PayoutScreenState extends State<PayoutScreen>
                       const EdgeInsets.symmetric(horizontal: Sizes.dimen_20),
                   child: Button2(
                     text: TranslationConstants.viewMore,
-                    onPressed: () =>
-                        navigator.pushTo(TransactionHistoryScreen()),
+                    onPressed: () => navigator.pushTo(TransactionListScreen()),
                   ),
                 ),
               ),

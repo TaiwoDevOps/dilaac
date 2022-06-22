@@ -6,6 +6,7 @@ import 'package:dilaac/utils/log.dart';
 import 'package:dilaac/utils/navigator.dart';
 import 'package:flutter/material.dart';
 
+import '../journeys/transaction_history_screen/transaction_history_screen.dart';
 import '../journeys/transaction_history_screen/transaction_list.dart';
 
 class TransactionAndAmountCard extends StatelessWidget {

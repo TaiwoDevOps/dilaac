@@ -15,7 +15,11 @@ import 'package:dilaac/utils/log.dart';
 import 'package:dilaac/utils/navigator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 
+import '../../../core/providers.dart';
+import '../../../models/trans_history_model.dart';
+/*
 class TransactionHistoryScreen extends StatefulHookWidget {
   @override
   _TransactionHistoryScreenState createState() =>
@@ -23,16 +27,47 @@ class TransactionHistoryScreen extends StatefulHookWidget {
 }
 
 class _TransactionHistoryScreenState extends State<TransactionHistoryScreen>
-    with AfterLayoutMixin<TransactionHistoryScreen> {
-  final List<ListItem<String>> _title = [
-    ListItem("All time"),
-    ListItem("7 Days"),
-    ListItem("14 Days"),
-    ListItem("28 Days"),
-    ListItem("1 Month"),
+    with
+        AfterLayoutMixin<TransactionHistoryScreen>,
+        SingleTickerProviderStateMixin {
+  Transactions? data;
+  late TabController _controller;
+  int _selectedTab = 0;
+
+  final _listOfTabs = [
+    TranslationConstants.all,
+    TranslationConstants.inflow,
+    TranslationConstants.payout
   ];
   @override
   void initState() {
+    _controller = TabController(
+      initialIndex: 0,
+      length: _listOfTabs.length,
+      vsync: this,
+    );
+
+    _controller.addListener(() async {
+      if (!_controller.indexIsChanging) {
+        setState(() {
+          _selectedTab = _controller.index;
+        });
+      }
+
+      if (_controller.index == 0) {
+        context
+            .read(transHistoryVM)
+            .getTransHist(type: null, start: null, end: null);
+      } else if (_controller.index == 1) {
+        context
+            .read(transHistoryVM)
+            .getTransHist(type: "payin", start: null, end: null);
+      } else {
+        context
+            .read(transHistoryVM)
+            .getTransHist(type: "payout", start: null, end: null);
+      }
+    });
     super.initState();
   }
 
@@ -42,7 +77,9 @@ class _TransactionHistoryScreenState extends State<TransactionHistoryScreen>
   }
 
   @override
-  void afterFirstLayout(BuildContext context) {}
+  void afterFirstLayout(BuildContext context) {
+    // context.read(transHistoryVM).getTransHist();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -57,131 +94,88 @@ class _TransactionHistoryScreenState extends State<TransactionHistoryScreen>
               child: Column(
                 children: [
                   const YMargin(Sizes.dimen_40),
-                  Container(
-                      height: Sizes.dimen_40,
-                      margin: const EdgeInsets.symmetric(
-                          horizontal: Sizes.dimen_16),
-                      decoration: BoxDecoration(
-                          border: Border.all(
-                              color: Color(0xFFFF9933), width: Sizes.dimen_2),
-                          borderRadius: BorderRadius.circular(Sizes.dimen_8)),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: [
-                          Expanded(
-                            child: Container(
-                              height: double.infinity,
-                              alignment: Alignment.center,
-                              decoration: BoxDecoration(
-                                gradient: kHomeLinearGrad,
-                                borderRadius:
-                                    BorderRadius.circular(Sizes.dimen_6),
-                              ),
-                              child: Text(
-                                TranslationConstants.all,
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .subtitle1
-                                    ?.copyWith(
-                                        fontWeight: FontWeight.w900,
-                                        fontSize: Sizes.dimen_18,
-                                        color: AppColor.white),
-                              ),
-                            ),
-                          ),
-                          Expanded(
-                            child: Center(
-                              child: Text(
-                                TranslationConstants.inflow,
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .subtitle1
-                                    ?.copyWith(
-                                        fontWeight: FontWeight.w900,
-                                        fontSize: Sizes.dimen_18,
-                                        color:
-                                            AppColor.textFormPlaceHolderColor),
-                              ),
-                            ),
-                          ),
-                          Container(
-                            color: Color(0xFFFD8D3C),
-                            height: Sizes.dimen_60,
-                            width: Sizes.dimen_1,
-                          ),
-                          Expanded(
-                            child: Center(
-                              child: Text(
-                                TranslationConstants.payout,
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .subtitle1
-                                    ?.copyWith(
-                                        fontWeight: FontWeight.w900,
-                                        fontSize: Sizes.dimen_18,
-                                        color:
-                                            AppColor.textFormPlaceHolderColor),
-                              ),
-                            ),
-                          ),
-                        ],
-                      )),
-                  const YMargin(Sizes.dimen_18),
-                  //
                   Padding(
-                    padding: const EdgeInsets.only(left: Sizes.dimen_16),
-                    child: SizedBox(
-                      height: Sizes.dimen_32,
-                      child: ListView.separated(
-                        physics: BouncingScrollPhysics(),
-                        scrollDirection: Axis.horizontal,
-                        itemBuilder: (context, index) {
-                          return GestureDetector(
-                            onTap: () {
-                              setState(() {
-                                _title[index].selected =
-                                    !_title[index].selected;
-                              });
-                            },
-                            child: Container(
-                              alignment: Alignment.center,
-                              decoration: BoxDecoration(
-                                  color: _title[index].selected
-                                      ? AppColor.deepDarkOrange
-                                      : null,
-                                  border: Border.all(
-                                      color: _title[index].selected
-                                          ? AppColor.deepDarkOrange
-                                          : AppColor.textFormBorderColor),
-                                  borderRadius:
-                                      BorderRadius.circular(Sizes.dimen_24)),
-                              child: Padding(
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: Sizes.dimen_12),
-                                child: Text(
-                                  _title[index].data,
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .subtitle1
-                                      ?.copyWith(
-                                          fontWeight: FontWeight.w400,
-                                          fontSize: Sizes.dimen_12,
-                                          color: _title[index].selected
-                                              ? AppColor.white
-                                              : AppColor
-                                                  .textFormPlaceHolderColor),
-                                ),
-                              ),
-                            ),
-                          );
-                        },
-                        itemCount: _title.length,
-                        separatorBuilder: (context, index) => Container(
-                          width: Sizes.dimen_8,
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: Sizes.dimen_16),
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(Sizes.dimen_12),
+                      child: Material(
+                        color: Colors.grey.shade100,
+                        shape: RoundedRectangleBorder(
+                            side: BorderSide(color: AppColor.deepOrange),
+                            borderRadius:
+                                BorderRadius.circular(Sizes.dimen_12)),
+                        child: TabBar(
+                          unselectedLabelColor: Colors.blue,
+                          labelColor: Colors.blue,
+                          indicatorColor: Colors.white,
+                          controller: _controller,
+                          labelPadding: const EdgeInsets.all(0.0),
+                          tabs: [
+                            _getTab(0, _listOfTabs[0]),
+                            _getTab(1, _listOfTabs[1]),
+                            _getTab(2, _listOfTabs[2]),
+                          ],
                         ),
                       ),
                     ),
                   ),
+                  const YMargin(Sizes.dimen_18),
+                  //
+                  // Padding(
+                  //   padding: const EdgeInsets.only(left: Sizes.dimen_16),
+                  //   child: SizedBox(
+                  //     height: Sizes.dimen_32,
+                  //     child: ListView.separated(
+                  //       physics: BouncingScrollPhysics(),
+                  //       scrollDirection: Axis.horizontal,
+                  //       itemBuilder: (context, index) {
+                  //         return GestureDetector(
+                  //           onTap: () {
+                  //             setState(() {
+                  //               _title[index].selected =
+                  //                   !_title[index].selected;
+                  //             });
+                  //           },
+                  //           child: Container(
+                  //             alignment: Alignment.center,
+                  //             decoration: BoxDecoration(
+                  //                 color: _title[index].selected
+                  //                     ? AppColor.deepDarkOrange
+                  //                     : null,
+                  //                 border: Border.all(
+                  //                     color: _title[index].selected
+                  //                         ? AppColor.deepDarkOrange
+                  //                         : AppColor.textFormBorderColor),
+                  //                 borderRadius:
+                  //                     BorderRadius.circular(Sizes.dimen_24)),
+                  //             child: Padding(
+                  //               padding: const EdgeInsets.symmetric(
+                  //                   horizontal: Sizes.dimen_12),
+                  //               child: Text(
+                  //                 _title[index].data,
+                  //                 style: Theme.of(context)
+                  //                     .textTheme
+                  //                     .subtitle1
+                  //                     ?.copyWith(
+                  //                         fontWeight: FontWeight.w400,
+                  //                         fontSize: Sizes.dimen_12,
+                  //                         color: _title[index].selected
+                  //                             ? AppColor.white
+                  //                             : AppColor
+                  //                                 .textFormPlaceHolderColor),
+                  //               ),
+                  //             ),
+                  //           ),
+                  //         );
+                  //       },
+                  //       itemCount: _title.length,
+                  //       separatorBuilder: (context, index) => Container(
+                  //         width: Sizes.dimen_8,
+                  //       ),
+                  //     ),
+                  //   ),
+                  // ),
                   //Transaction histories
                   Expanded(
                     child: Padding(
@@ -349,4 +343,31 @@ class _TransactionHistoryScreenState extends State<TransactionHistoryScreen>
       builder: (context) => FilterBottomSheetWidget(),
     );
   }
+
+  _getTab(index, title) {
+    return Tab(
+      child: SizedBox.expand(
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(Sizes.dimen_12),
+          child: Container(
+            child: Center(
+              child: Text(
+                title,
+                style: Theme.of(context).textTheme.subtitle1?.copyWith(
+                    fontWeight: FontWeight.w900,
+                    fontSize: Sizes.dimen_18,
+                    color: _selectedTab == index
+                        ? AppColor.white
+                        : AppColor.textFormPlaceHolderColor),
+              ),
+            ),
+            decoration: BoxDecoration(
+              gradient: _selectedTab == index ? kLinearGrad : null,
+            ),
+          ),
+        ),
+      ),
+    );
+  }
 }
+*/
